@@ -2,34 +2,91 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Product Store</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 
 <body>
 <div class="container my-5">
-    <h1 class="text-center">Product Store<br>(Spring Boot & Elasticsearch Application)<br/>
-        <a href="/" class="btn btn-danger text-right">Go Home</a>
+    <h1 class="text-center">Admin Panel<br>(Add Poll Questions with Options)<br/>
+        <a href="/" class="btn btn-danger text-right">Home</a>
     </h1>
     <hr>
-    <h2>Save Product</h2>
+    <h2>Create a Poll</h2>
 
-    <form action="#" th:action="@{/saveProduct}" th:object="${product}" method="POST">
-        <input type="text" th:field="*{id}" placeholder="Product Id" class="form-control mb-4 col-4">
+    <form action="#" th:action="@{/saveProduct}" th:object="${poll}" method="POST">
 
-        <input type="text" th:field="*{name}" placeholder="Product Name" class="form-control mb-4 col-4">
+        <input type="hidden" th:field="*{_id}" />
 
-        <input type="text" th:field="*{description}" placeholder="Product Description" class="form-control mb-4 col-4">
+        <div class="form-group">
+            <label for="question">Question</label>
+            <input type="text" class="form-control" id="question" th:field="*{question}" placeholder="Question">
+        </div>
 
-        <input type="text" th:field="*{price}" placeholder="Product Price" class="form-control mb-4 col-4">
+        <div class="form-group">
+            <label for="option1">Option 1</label>
+            <input type="text" class="form-control" id="option1" th:field="*{option1.text}" placeholder="Option 1">
+        </div>
 
-        <button type="submit" class="btn btn-info col-2"> Save Product</button>
+        <div class="form-group">
+            <label for="option2">Option 2</label>
+            <input type="text" class="form-control" id="option2" th:field="*{option2.text}" placeholder="Option 2">
+        </div>
+
+        <div class="form-group">
+            <label for="option3">Option 3</label>
+            <input type="text" class="form-control" id="option3" th:field="*{option3.text}" placeholder="Option 3">
+        </div>
+
+        <div class="form-group">
+            <label for="option4">Option 4</label>
+            <input type="text" class="form-control" id="option4" th:field="*{option4.text}" placeholder="Option 4">
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Tags</label>
+            <input type="text" class="form-control" id="tags" th:field="*{tags}" placeholder="Tags">
+        </div>
+
+        <div class="form-group">
+            <label for="mediaUrl">Media URL</label>
+            <input type="text" class="form-control" id="mediaUrl" th:field="*{mediaUrl}" placeholder="Media URL">
+        </div>
+
+        <div class="form-group">
+            <label for="userUrl">User URL</label>
+            <input type="text" class="form-control" id="userUrl" th:field="*{userUrl}" placeholder="User URL">
+        </div>
+
+        <div class="form-group">
+            <label for="extractedFrom">Extracted From</label>
+            <input type="text" class="form-control" id="extractedFrom" th:field="*{extractedFrom}" placeholder="Extracted From">
+        </div>
+
+        <div class="form-group">
+            <label for="esUid">ES UID</label>
+            <input type="text" class="form-control" id="esUid" th:field="*{esUid}" placeholder="ES UID">
+        </div>
+
+        <div class="form-group">
+            <label for="time">Time</label>
+            <input type="text" class="form-control" id="time" th:field="*{time}" placeholder="Time">
+        </div>
+
+        <div class="form-group">
+            <label for="totalInteraction">Total Interaction</label>
+            <input type="text" class="form-control" id="totalInteraction" th:field="*{totalInteraction}" placeholder="Total Interaction">
+        </div>
+
+        <button type="submit" class="btn btn-info">Save</button>
     </form>
 
     <hr>
 
-    <a th:href="@{/}" class="link-success"> Back to Product List</a>
+    <a th:href="@{/}" class="link-success">Back to Home</a>
 </div>
 </body>
 

@@ -16,26 +16,26 @@ public class ElasticSearchController {
     private ElasticSearchQuery elasticSearchQuery;
 
     @PostMapping("/createOrUpdateDocument")
-    public ResponseEntity<Object> createOrUpdateDocument(@RequestBody Product product) throws IOException {
-          String response = elasticSearchQuery.createOrUpdateDocument(product);
+    public ResponseEntity<Object> createOrUpdateDocument(@RequestBody Product poll) throws IOException {
+          String response = elasticSearchQuery.createOrUpdateDocument(poll);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/getDocument")
-    public ResponseEntity<Object> getDocumentById(@RequestParam String productId) throws IOException {
-       Product product =  elasticSearchQuery.getDocumentById(productId);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<Object> getDocumentById(@RequestParam String pollId) throws IOException {
+       Product poll =  elasticSearchQuery.getDocumentById(pollId);
+        return new ResponseEntity<>(poll, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteDocument")
-    public ResponseEntity<Object> deleteDocumentById(@RequestParam String productId) throws IOException {
-        String response =  elasticSearchQuery.deleteDocumentById(productId);
+    public ResponseEntity<Object> deleteDocumentById(@RequestParam String pollId) throws IOException {
+        String response =  elasticSearchQuery.deleteDocumentById(pollId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/searchDocument")
     public ResponseEntity<Object> searchAllDocument() throws IOException {
-        List<Product> products = elasticSearchQuery.searchAllDocuments();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        List<Product> polls = elasticSearchQuery.searchAllDocuments();
+        return new ResponseEntity<>(polls, HttpStatus.OK);
     }
 }

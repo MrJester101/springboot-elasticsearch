@@ -4,7 +4,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -18,67 +17,56 @@ public class ElasticSearchQuery {
     @Autowired
     private ElasticsearchClient elasticsearchClient;
 
-    private final String indexName = "products";
+    private final String indexName = "polls2";
 
-
-    public String createOrUpdateDocument(Product product) throws IOException {
-
+    public String createOrUpdateDocument(Product poll) throws IOException {
         IndexResponse response = elasticsearchClient.index(i -> i
                 .index(indexName)
-                .id(product.getId())
-                .document(product)
+                .id(poll.get_id())  // Using _id instead of id
+                .document(poll)
         );
         if (response.result().name().equals("Created")) {
-            return new StringBuilder("Document has been successfully created.").toString();
+            return new StringBuilder("Poll has been successfully created.").toString();
         } else if (response.result().name().equals("Updated")) {
-            return new StringBuilder("Document has been successfully updated.").toString();
+            return new StringBuilder("Poll has been successfully updated.").toString();
         }
         return new StringBuilder("Error while performing the operation.").toString();
     }
 
-    public Product getDocumentById(String productId) throws IOException {
-        Product product = null;
+    public Product getDocumentById(String pollId) throws IOException {
         GetResponse<Product> response = elasticsearchClient.get(g -> g
                         .index(indexName)
-                        .id(productId),
+                        .id(pollId),
                 Product.class
         );
 
         if (response.found()) {
-            product = response.source();
-            System.out.println("Product name " + product.getName());
+            return response.source();
         } else {
-            System.out.println("Product not found");
+            return null;
         }
-
-        return product;
     }
 
-    public String deleteDocumentById(String productId) throws IOException {
-
-        DeleteRequest request = DeleteRequest.of(d -> d.index(indexName).id(productId));
-
+    public String deleteDocumentById(String pollId) throws IOException {
+        DeleteRequest request = DeleteRequest.of(d -> d.index(indexName).id(pollId));
         DeleteResponse deleteResponse = elasticsearchClient.delete(request);
         if (Objects.nonNull(deleteResponse.result()) && !deleteResponse.result().name().equals("NotFound")) {
-            return new StringBuilder("Product with id " + deleteResponse.id() + " has been deleted.").toString();
+            return new StringBuilder("Poll with id " + pollId + " has been deleted.").toString(); // Using pollId instead of deleteResponse.id()
         }
-        System.out.println("Product not found");
-        return new StringBuilder("Product with id " + deleteResponse.id() + " does not exist.").toString();
-
+        return new StringBuilder("Poll with id " + pollId + " does not exist.").toString(); // Using pollId instead of deleteResponse.id()
     }
 
     public List<Product> searchAllDocuments() throws IOException {
-
         SearchRequest searchRequest = SearchRequest.of(s -> s.index(indexName));
         SearchResponse searchResponse = elasticsearchClient.search(searchRequest, Product.class);
-        List<Hit> hits = searchResponse.hits().hits();
-        List<Product> products = new ArrayList<>();
-        for (Hit object : hits) {
-
-            System.out.print(((Product) object.source()));
-            products.add((Product) object.source());
-
+        List<Hit<Product>> hits = searchResponse.hits().hits();
+        List<Product> polls = new ArrayList<>();
+        for (Hit<Product> hit : hits) {
+            Product product = hit.source();
+            // Set the _id field of the Product object
+            product.set_id(hit.id());
+            polls.add(product);
         }
-        return products;
+        return polls;
     }
 }

@@ -20,24 +20,24 @@ public class UIController {
     }
 
     @PostMapping("/saveProduct")
-    public String saveProduct(@ModelAttribute("product") Product product) throws IOException {
-        elasticSearchQuery.createOrUpdateDocument(product);
+    public String saveProduct(@ModelAttribute("poll") Product poll) throws IOException {
+        elasticSearchQuery.createOrUpdateDocument(poll);
         return "redirect:/";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") String id, Model model) throws IOException {
 
-        Product product = elasticSearchQuery.getDocumentById(id);
-        model.addAttribute("product", product);
+        Product poll = elasticSearchQuery.getDocumentById(id);
+        model.addAttribute("poll", poll);
         return "updateProductDocument";
     }
 
     @GetMapping("/showNewProductForm")
     public String showNewEmployeeForm(Model model) {
         // create model attribute to bind form data
-        Product product = new Product();
-        model.addAttribute("product", product);
+        Product poll = new Product();
+        model.addAttribute("poll", poll);
         return "newProductDocument";
     }
 
